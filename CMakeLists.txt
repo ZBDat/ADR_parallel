@@ -20,6 +20,12 @@ target_link_libraries(_sparkplus PRIVATE sparkplus_headers)
 
 target_compile_features(_sparkplus PRIVATE cxx_std_17)
 
-install(TARGETS _sparkplus LIBRARY DESTINATION sparkplus RUNTIME DESTINATION sparkplus)
-install(FILES python/sparkplus/__init__.py python/sparkplus/py.typed DESTINATION sparkplus)
+if(DEFINED SKBUILD_PLATLIB_DIR)
+  set(SPARKPLUS_PY_INSTALL_DIR "${SKBUILD_PLATLIB_DIR}/sparkplus")
+else()
+  set(SPARKPLUS_PY_INSTALL_DIR "sparkplus")
+endif()
+
+install(TARGETS _sparkplus LIBRARY DESTINATION "${SPARKPLUS_PY_INSTALL_DIR}" RUNTIME DESTINATION "${SPARKPLUS_PY_INSTALL_DIR}")
+install(FILES python/sparkplus/__init__.py python/sparkplus/py.typed DESTINATION "${SPARKPLUS_PY_INSTALL_DIR}")
 install(DIRECTORY include/ DESTINATION include)
